@@ -36,7 +36,7 @@ export const defaultData = {
     { id: "b4", icon: "Layers", title: "End-to-End Business Support", text: "One partner from incorporation through expansion and beyond." },
   ],
   about: {
-    intro: "Bhoomi Business Solutions is a business consultancy that partners with entrepreneurs, family businesses and corporates to plan, structure and grow with confidence.",
+    intro: "Bhoomi Business Solutions is a CA services and accounting firm that partners with entrepreneurs, family businesses and corporates on tax, compliance, audit and financial advisory.",
     who: "We are a team of consultants and advisors who combine financial discipline with practical business sense. We work as an extension of your leadership team.",
     mission: "To make professional, ethical and practical business advice accessible to every growing enterprise.",
     vision: "To be the most trusted growth partner for Indian businesses — rooted in integrity, driven by results.",

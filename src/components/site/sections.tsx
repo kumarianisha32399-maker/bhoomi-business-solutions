@@ -30,7 +30,7 @@ export function Hero() {
             <Link to="/contact" className="btn-ghost-light">Get in Touch</Link>
           </div>
         </div>
-        <div className="absolute bottom-10 left-0 right-0">
+        <div className="absolute bottom-24 left-0 right-0">
           <div className="container-x flex items-center gap-4">
             {slides.map((sl, k) => <button key={sl.id} onClick={() => setI(k)} aria-label={`Slide ${k + 1}`} className={`h-1 transition-all ${k === i ? "w-12 bg-gold" : "w-6 bg-primary-foreground/40"}`} />)}
             <div className="ml-auto flex gap-2">
