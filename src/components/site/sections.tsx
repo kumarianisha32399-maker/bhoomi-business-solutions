@@ -292,11 +292,11 @@ export function ContactBlock() {
   const s = data.settings;
   const empty = { name: "", email: "", phone: "", service: "", message: "" };
   const [f, setF] = useState(empty);
-  const [err, setErr] = useState<Record<string, string>>({});
+  const [err, setErr] = useState<Partial<Record<"name" | "email" | "phone" | "service" | "message", string>>>({});
   const [done, setDone] = useState(false);
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const er: Record<string, string> = {};
+    const er: typeof err = {};
     if (f.name.trim().length < 2) er.name = "Please enter your name";
     if (!/^\S+@\S+\.\S+$/.test(f.email)) er.email = "Enter a valid email";
     if (!/^[+\d\s-]{7,15}$/.test(f.phone)) er.phone = "Enter a valid phone number";
