@@ -10,6 +10,8 @@ export const Route = createFileRoute("/admin/dashboard")({
   component: Admin,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyObj = any;
 type F = { k: string; label: string; type?: "text" | "textarea" | "image" | "number" | "select" | "list"; options?: string[] };
 const tabs = [
   ["dashboard", "Dashboard", LayoutDashboard], ["website", "Website Content", Globe], ["services", "Services", Briefcase], ["industries", "Industries", Factory],
@@ -103,7 +105,7 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
   );
 }
 
-function Fields({ fields, v, set }: { fields: F[]; v: Record<string, any>; set: (v: Record<string, any>) => void }) {
+function Fields({ fields, v, set }: { fields: F[]; v: AnyObj; set: (v: AnyObj) => void }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {fields.map((f) => (
@@ -122,10 +124,10 @@ function Fields({ fields, v, set }: { fields: F[]; v: Record<string, any>; set: 
   );
 }
 
-function ListEditor({ k, fields, title, make = (v) => v }: { k: keyof SiteData; fields: F[]; title: string; make?: (v: Record<string, any>) => Record<string, any> }) {
+function ListEditor({ k, fields, title, make = (v) => v }: { k: keyof SiteData; fields: F[]; title: string; make?: (v: AnyObj) => AnyObj }) {
   const { data, update } = useStore();
-  const list = data[k] as unknown as Record<string, any>[];
-  const [edit, setEdit] = useState<Record<string, any> | null>(null);
+  const list = data[k] as unknown as AnyObj[];
+  const [edit, setEdit] = useState<AnyObj | null>(null);
   const save = () => {
     if (!edit) return;
     const isNew = !edit.id;
@@ -135,7 +137,7 @@ function ListEditor({ k, fields, title, make = (v) => v }: { k: keyof SiteData; 
     update(k, next as never, `${isNew ? "Added" : "Updated"} ${String(k).replace(/s$/, "")}: ${item[title]}`);
     setEdit(null);
   };
-  const del = (x: Record<string, any>) => { if (confirm(`Delete "${x[title]}"?`)) update(k, list.filter((y) => y.id !== x.id) as never, `Deleted ${String(k).replace(/s$/, "")}: ${x[title]}`); };
+  const del = (x: AnyObj) => { if (confirm(`Delete "${x[title]}"?`)) update(k, list.filter((y) => y.id !== x.id) as never, `Deleted ${String(k).replace(/s$/, "")}: ${x[title]}`); };
   return (
     <div className="space-y-5">
       <div className="flex justify-between"><p className="text-sm text-muted-foreground">{list.length} items</p><button className="btn-navy !py-2" onClick={() => setEdit({ points: [] })}><Plus className="h-4 w-4" />Add New</button></div>
@@ -167,7 +169,7 @@ function BlogCats() {
 
 function ObjEditor<K extends "about" | "settings">({ k, fields, heading }: { k: K; fields: F[]; heading: string }) {
   const { data, update } = useStore();
-  const [v, setV] = useState<Record<string, any>>(data[k]);
+  const [v, setV] = useState<AnyObj>(data[k]);
   const [saved, setSaved] = useState(false);
   useEffect(() => setV(data[k]), [data, k]);
   return <Card><h2 className="mb-4 text-lg">{heading}</h2><Fields fields={fields} v={v} set={(x) => { setV(x); setSaved(false); }} /><button className="btn-navy mt-5 !py-2" onClick={() => { update(k, v as SiteData[K], `Updated ${heading}`); setSaved(true); }}>{saved ? "Saved ✓" : "Save Changes"}</button></Card>;
