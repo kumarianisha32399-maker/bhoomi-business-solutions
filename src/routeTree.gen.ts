@@ -21,8 +21,12 @@ import { Route as ProcessRouteImport } from './routes/process'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WhyChooseUsRouteImport } from './routes/why-choose-us'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -84,9 +88,24 @@ const WhyChooseUsRoute = WhyChooseUsRouteImport.update({
   path: '/why-choose-us',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
 const InsightsIndexRoute = InsightsIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => InsightsRoute,
+} as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => InsightsRoute,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -94,11 +113,16 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ServicesRoute,
 } as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServicesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
@@ -108,13 +132,16 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/insights/': typeof InsightsIndexRoute
   '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
@@ -122,6 +149,10 @@ export interface FileRoutesByTo {
   '/process': typeof ProcessRoute
   '/terms': typeof TermsRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/insights': typeof InsightsIndexRoute
   '/services': typeof ServicesIndexRoute
 }
@@ -129,7 +160,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
@@ -139,6 +170,10 @@ export interface FileRoutesById {
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/insights/': typeof InsightsIndexRoute
   '/services/': typeof ServicesIndexRoute
 }
@@ -157,13 +192,16 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/why-choose-us'
+    | '/admin/login'
+    | '/insights/$slug'
+    | '/services/$slug'
+    | '/admin/'
     | '/insights/'
     | '/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/admin'
     | '/careers'
     | '/contact'
     | '/industries'
@@ -171,6 +209,10 @@ export interface FileRouteTypes {
     | '/process'
     | '/terms'
     | '/why-choose-us'
+    | '/admin/login'
+    | '/insights/$slug'
+    | '/services/$slug'
+    | '/admin'
     | '/insights'
     | '/services'
   id:
@@ -187,6 +229,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/why-choose-us'
+    | '/admin/login'
+    | '/insights/$slug'
+    | '/services/$slug'
+    | '/admin/'
     | '/insights/'
     | '/services/'
   fileRoutesById: FileRoutesById
@@ -194,7 +240,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   IndustriesRoute: typeof IndustriesRoute
@@ -292,11 +338,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhyChooseUsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/insights/': {
       id: '/insights/'
       path: '/'
       fullPath: '/insights/'
       preLoaderRoute: typeof InsightsIndexRouteImport
+      parentRoute: typeof InsightsRoute
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
       parentRoute: typeof InsightsRoute
     }
     '/services/': {
@@ -306,14 +373,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof ServicesRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
   InsightsIndexRoute: typeof InsightsIndexRoute
 }
 
 const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
   InsightsIndexRoute: InsightsIndexRoute,
 }
 
@@ -322,10 +410,12 @@ const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
 )
 
 interface ServicesRouteChildren {
+  ServicesSlugRoute: typeof ServicesSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesSlugRoute: ServicesSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
 }
 
@@ -336,7 +426,7 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   IndustriesRoute: IndustriesRoute,
