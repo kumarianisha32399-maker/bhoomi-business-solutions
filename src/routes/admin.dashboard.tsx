@@ -194,7 +194,7 @@ function Settings_() {
 function LogoSettings() {
   return (
     <div className="space-y-5">
-      <Card><p className="text-sm text-muted-foreground">The website currently uses a temporary text logo. Once the approved logo is ready, upload it or paste its URL below — it will replace the logo in the navbar, footer and admin automatically. Clear the field to return to the text logo.</p><div className="mt-5 border bg-surface p-6"><Logo /></div></Card>
+      <Card><p className="text-sm text-muted-foreground">The official Bhoomi Business Solutions logo is live in the navbar, footer and admin. To replace it, upload a new logo or paste its URL below — it will update everywhere automatically. Clear the field to return to the default logo.</p><div className="mt-5 border bg-surface p-6"><Logo /></div></Card>
       <ObjEditor k="settings" heading="Approved Logo" fields={[{ k: "logoUrl", label: "Logo image", type: "image" }]} />
     </div>
   );
