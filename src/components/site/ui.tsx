@@ -2,22 +2,20 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import * as Icons from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useStore } from "@/lib/store";
+import bhoomiLogo from "@/assets/bhoomi-logo.png";
 
 export function Icon({ name, className = "h-6 w-6" }: { name: string; className?: string }) {
   const C = (Icons as unknown as Record<string, Icons.LucideIcon>)[name] ?? Icons.Circle;
   return <C className={className} strokeWidth={1.5} />;
 }
 
-/** Replaceable brand logo: shows uploaded logo URL from Admin > Logo Settings, otherwise the text logo. */
+/** Brand logo: shows uploaded logo URL from Admin > Logo Settings, otherwise the default Bhoomi logo. On dark surfaces (light) it sits on a white pill so the navy lettering stays readable. */
 export function Logo({ light = false }: { light?: boolean }) {
   const { data } = useStore();
-  if (data.settings.logoUrl) return <img src={data.settings.logoUrl} alt={data.settings.siteName} className="h-11 w-auto object-contain" />;
-  return (
-    <span className="flex flex-col leading-none">
-      <span className={`font-display text-xl font-semibold md:text-2xl ${light ? "text-primary-foreground" : "text-primary"}`}>Bhoomi</span>
-      <span className={`mt-1 text-[10px] font-semibold uppercase tracking-[0.28em] ${light ? "text-gold" : "text-muted-foreground"}`}>Business Solutions</span>
-    </span>
-  );
+  const src = data.settings.logoUrl || bhoomiLogo;
+  const img = <img src={src} alt={data.settings.siteName} className="h-11 w-auto max-w-[220px] object-contain" />;
+  if (light) return <span className="inline-flex items-center rounded-md bg-white px-3 py-1.5">{img}</span>;
+  return img;
 }
 
 export function Img({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
